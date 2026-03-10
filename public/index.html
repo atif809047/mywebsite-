@@ -53,4 +53,28 @@
             Upload to Website
         </button>
     </form>
-</div>
+ <div>
+<div id="video-list" style="margin: 20px;">
+    <h2>Uploaded Videos</h2>
+    </div>
+
+<script>
+    // Server se videos ka data mangne ke liye
+    fetch('/api/videos')
+        .then(response => response.json())
+        .then(data => {
+            const list = document.getElementById('video-list');
+            if (data.length === 0) {
+                list.innerHTML += "<p>Abhi tak koi video nahi hai.</p>";
+            }
+            data.forEach(video => {
+                list.innerHTML += `
+                    <div style="background: #eee; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+                        <strong>${video.title}</strong><br>
+                        <a href="${video.link}" target="_blank" style="color: blue;">Watch / Download</a>
+                    </div>
+                `;
+            });
+        });
+</script>
+
