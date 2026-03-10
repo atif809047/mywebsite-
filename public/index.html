@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Library</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f4; padding: 10px; }
+        #search { width: 95%; padding: 10px; border-radius: 20px; border: 1px solid #ddd; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px; }
+        .card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .btn { display: block; background: #007bff; color: white; text-align: center; padding: 10px; text-decoration: none; border-radius: 5px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <input type="text" id="search" placeholder="Search videos..." onkeyup="filter()">
+    <div class="grid" id="list"></div>
+    <script>
+        async function load() {
+            const r = await fetch('/api/get-videos');
+            const data = await r.json();
+            document.getElementById('list').innerHTML = data.map(v => `
+                <div class="card">
+                    <h3>${v.title}</h3>
+                    <p>Size: ${v.size}</p>
+                    <a href="${v.link}" class="btn" target="_blank">Download Now</a>
+                </div>`).join('');
+        }
+        function filter() {
+            let val = document.getElementById('search').value.toLowerCase();
+            let cards = document.getElementsByClassName('card');
+            for(let c of cards) {
+                c.style.display = c.innerText.toLowerCase().includes(val) ? "" : "none";
+            }
+        }
+        load();
+    </script>
+</body>
+</html>

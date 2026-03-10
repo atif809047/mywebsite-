@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="padding: 20px; font-family: sans-serif;">
+    <div id="login">
+        <input type="password" id="p" placeholder="Enter Password">
+        <button onclick="doLogin()">Login</button>
+    </div>
+    <div id="upload" style="display:none;">
+        <input type="text" id="t" placeholder="Video Title"><br><br>
+        <input type="text" id="l" placeholder="MediaFire Link"><br><br>
+        <input type="number" id="s" placeholder="Size (MB) - Max 200"><br><br>
+        <button onclick="add()">Add Video</button>
+    </div>
+    <script>
+        let tk = "";
+        async function doLogin() {
+            let p = document.getElementById('p').value;
+            let res = await fetch('/api/login', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({pass:p})});
+            if(res.ok) { tk="809047_verified"; document.getElementById('login').style.display='none'; document.getElementById('upload').style.display='block'; }
+            else { alert("Wrong!"); }
+        }
+        async function add() {
+            let title=document.getElementById('t').value, link=document.getElementById('l').value, size=document.getElementById('s').value;
+            await fetch('/api/add-video', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({title, link, size, token:tk})});
+            alert("Added!"); location.reload();
+        }
+    </script>
+</body>
+</html>
