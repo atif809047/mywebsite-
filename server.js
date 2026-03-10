@@ -1,39 +1,45 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
+
 const app = express();
 const adapter = new FileSync('db.json');
 const db = low(adapter);
 
+// Database setup (Default videos list)
 db.defaults({ videos: [] }).write();
-app.use(express.json());
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-const ADMIN_PASS = "809047";
+// --- YAHAN APNA PASSWORD SET KAREIN ---
+const ADMIN_PASSWORD = "atif123"; 
 
-// Login API
-app.post('/api/login', (req, res) => {
-    if (req.body.pass === ADMIN_PASS) {
-        res.json({ success: true, token: "809047_verified" });
-    } else {
-        res.status(401).json({ success: false });
+// Upload Route
+app.post('/upload', (req, res) => {
+    const { title, link, password } = req.body;
+
+    // Password Check
+    if (password !== ADMIN_PASSWORD) {
+        return res.send("<h1>Ghalat Password!</h1><p>Wapis jayein aur sahi password dalein.</p>");
     }
+
+    // Save to Database
+    db.get('videos').push({ title, link }).write();
+    
+    // Upload hone ke baad home page par bhej dega
+    res.redirect('/');
 });
 
-// Add Video API
-app.post('/api/add-video', (req, res) => {
-    const { title, link, size, token } = req.body;
-    if (token === "809047_verified" && parseFloat(size) <= 200) {
-        db.get('videos').push({ title, link, size: size + "MB" }).write();
-        res.json({ success: true });
-    } else {
-        res.status(400).json({ message: "Invalid data or size > 200MB" });
-    }
+// API to get videos (Home page par dikhane ke liye)
+app.get('/api/videos', (req, res) => {
+    const videos = db.get('videos').value();
+    res.json(videos);
 });
 
-// Get Videos API
-app.get('/api/get-videos', (req, res) => {
-    res.json(db.get('videos').value());
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log("Server is live on port " + PORT));
+

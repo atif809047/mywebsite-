@@ -36,3 +36,21 @@
     </script>
 </body>
 </html>
+<div style="background: #222; color: white; padding: 20px; border-radius: 10px; margin: 20px; font-family: sans-serif;">
+    <h3>Admin Upload Panel</h3>
+    <form action="/upload" method="POST">
+        <input type="text" name="title" placeholder="Video ka naam" required 
+               style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: none;"><br>
+        
+        <input type="url" name="link" placeholder="MediaFire link yahan paste karein" required 
+               style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: none;"><br>
+        
+        <input type="password" name="password" placeholder="Password daalein" required 
+               style="width: 90%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: none;"><br>
+        
+        <button type="submit" 
+                style="background: #e91e63; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+            Upload to Website
+        </button>
+    </form>
+</div>
