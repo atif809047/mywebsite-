@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediaFire Link Saver</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+        .container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        input[type="text"] { width: 70%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        button { padding: 10px 20px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .link-item { background: #e9ecef; padding: 10px; margin-top: 10px; border-radius: 4px; word-break: break-all; }
+        a { color: #007bff; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Media Links Cloud Storage</h1>
+        <p>Ye links kisi bhi phone se dekh sakte hain.</p>
+
+        <form action="/save" method="POST">
+            <input type="text" name="mediaURL" placeholder="Paste MediaFire Link Here" required>
+            <button type="submit">Save Permanently</button>
+        </form>
+
+        <hr>
+
+        <div id="display">
+            <% if (links.length > 0) { %>
+                <% links.forEach(link => { %>
+                    <div class="link-item">
+                        <a href="<%= link.url %>" target="_blank"><%= link.url %></a>
+                        <br><small>Saved on: <%= link.createdAt.toLocaleString() %></small>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>Koi link nahi mila. Naya link add karein!</p>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>
+
