@@ -1,11 +1,45 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
+// --- SERVER START ---
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
+cloudinary.config({
+  cloud_name: 'dfqooquqw',
+  api_key: '214291713635552',
+  api_secret: '6Sy7xYdGpkKC_1susyrJcZgZtxw'
+});
 
-const app = express();
-const adapter = new FileSync('db.json');
-const db = low(adapter);
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'Atif_Videos',
+    resource_type: 'video',
+  },
+});
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
+
+app.post('/upload', upload.single('video'), async (req, res) => {
+    try {
+        // Yeh link ab Cloudinary se aa raha hai aur permanent hai
+        const permanentLink = req.file.path; 
+
+        // Agar aap MongoDB use kar rahe hain toh yahan save karein:
+        // await Video.create({ url: permanentLink });
+
+        res.send(`Video Upload Ho Gayi! Link: ${permanentLink}`);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Upload fail!");
+    }
+});
+
 
 // Database setup (Default videos list)
 db.defaults({ videos: [] }).write();
@@ -42,4 +76,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
 
