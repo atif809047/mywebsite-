@@ -1,0 +1,11 @@
+<div id="upload-section" style="margin: 30px; padding: 20px; border: 2px dashed #ff0000; text-align: center;">
+    <h2 style="color: #000;">Upload Your Video</h2>
+    
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="video" accept="video/*" required style="margin-bottom: 10px;">
+        <br>
+        <button type="submit" style="background: red; color: white; padding: 10px 20px; border: none; cursor: pointer; font-weight: bold;">
+            Upload to Cloudinary (Permanent)
+        </button>
+    </form>
+</div>
